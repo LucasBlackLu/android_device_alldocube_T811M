@@ -1,0 +1,44 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+BOARD_VENDOR := alldocube
+DEVICE_PATH := device/alldocube/T811M
+
+# Architecture
+TARGET_ARCH := arm64
+TARGET_ARCH_VARIANT := armv8-a
+TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 :=
+TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT_RUNTIME := kryo300
+
+TARGET_2ND_ARCH := arm
+TARGET_2ND_ARCH_VARIANT := armv7-a-neon
+TARGET_2ND_CPU_ABI := armeabi-v7a
+TARGET_2ND_CPU_ABI2 := armeabi
+TARGET_2ND_CPU_VARIANT := generic
+TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a75
+
+# Bootloader
+TARGET_BOOTLOADER_BOARD_NAME := T811M 
+
+# Display
+TARGET_SCREEN_DENSITY := 213
+
+# Metadata
+BOARD_USES_METADATA_PARTITION := true
+
+# OTA Updates
+TARGET_OTA_ASSERT_DEVICE := T811M
+
+# Plaform
+BOARD_HAS_MTK_HARDWARE := true
+TARGET_BOARD_PLATFORM := mt6789
+
+# Security patch level
+VENDOR_SECURITY_PATCH := 2023-11-05
+
+# Treble
+BOARD_VNDK_VERSION := current
