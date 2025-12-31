@@ -47,6 +47,51 @@ PRODUCT_PACKAGES += \
     create_pl_dev.recovery
 
 # Audio
+$(call soong_config_set,android_hardware_audio,run_64bit,true)
+$(call soong_config_set_bool,android_hardware_audio,skip_speaker_layout_channel_mask_field,true)
+PRODUCT_PACKAGES += \
+    android.hardware.audio@7.0-impl:64 \
+    android.hardware.audio.effect@7.0-impl:64 \
+    android.hardware.audio.service \
+    android.hardware.bluetooth.audio-impl:64 \
+    android.hardware.soundtrigger@2.3-impl:64
+
+PRODUCT_PACKAGES += \
+    audio.primary.default:64 \
+    audio.bluetooth.default:64 \
+    audio.r_submix.default:64 \
+    audio.usb.default:64
+
+PRODUCT_PACKAGES += \
+    audio_policy.stub:64 \
+    libopus.vendor:64 \
+    audioclient-types-aidl-cpp.vendor:64 \
+    libaudioroute.vendor:64 \
+    libaudiofoundation.vendor:64 \
+    libbundlewrapper:64 \
+    libbluetooth_audio_session:64 \
+    libaudiopreprocessing:64 \
+    libalsautils:64 \
+    libdownmix:64 \
+    libeffectproxy:64 \
+    libnbaio_mono:64 \
+    libtinycompress:64 \
+    libdynproc:64 \
+    libhapticgenerator:64 \
+    libldnhncr:64 \
+    libreverbwrapper:64 \
+    libprocessgroup.vendor:64
+
+PRODUCT_PACKAGES += \
+   vendor.mediatek.hardware.bluetooth.audio@2.1.vendor:64 \
+   vendor.mediatek.hardware.bluetooth.audio@2.2.vendor:64
+
+PRODUCT_COPY_FILES += \
+    frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
+    frameworks/av/services/audiopolicy/config/bluetooth_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_audio_policy_configuration.xml \
+    frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
+    frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml
+
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.low_latency.xml \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
