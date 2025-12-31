@@ -34,6 +34,24 @@ PRODUCT_PACKAGES += \
     create_pl_dev \
     create_pl_dev.recovery
 
+# fastbootd
+PRODUCT_PACKAGES += \
+    android.hardware.fastboot@1.1-impl-mock \
+    fastbootd
+
+# Health
+PRODUCT_PACKAGES += \
+    android.hardware.health@2.1-impl \
+    android.hardware.health@2.1-service
+
+# Init
+PRODUCT_PACKAGES += \
+    fstab.emmc \
+    fstab.emmc.vendor_ramdisk \
+    fstab.mt6789 \
+    fstab.mt6789.vendor_ramdisk \
+    init.recovery.usb.rc \
+
 # Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
