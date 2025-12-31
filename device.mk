@@ -65,6 +65,18 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.xml
 
 # Display
+PRODUCT_PACKAGES += \
+    android.frameworks.displayservice@1.0.vendor:64 \
+    android.hardware.graphics.composer@2.3-service \
+    android.hardware.memtrack-service.mediatek
+
+PRODUCT_PACKAGES += \
+    android.hardware.graphics.allocator@4.0.vendor:64 \
+    android.hardware.graphics.mapper@4.0.vendor:64 \
+    libdrm.vendor:64 \
+    libhwc2on1adapter:64 \
+    libhwc2onfbadapter:64
+
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.faketouch.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.faketouch.xml \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.opengles.aep.xml \
