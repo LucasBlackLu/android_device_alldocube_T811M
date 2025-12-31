@@ -23,6 +23,5 @@ PRODUCT_MANUFACTURER := alldocube
 PRODUCT_GMS_CLIENTID_BASE := android-skythtek
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRIVATE_BUILD_DESC="iPlay_50_mini_Pro-user 13 TP1A.220624.014 1687767888 release-keys"
-
-BUILD_FINGERPRINT := Alldocube/iPlay_50_mini_Pro/iPlay_50_mini_Pro:13/TP1A.220624.014/1687767888:user/release-keys
+    BuildDesc="iPlay_50_mini_Pro-user 13 TP1A.220624.014 1687767888 release-keys" \
+    BuildFingerprint= Alldocube/iPlay_50_mini_Pro/iPlay_50_mini_Pro:13/TP1A.220624.014/1687767888:user/release-keys

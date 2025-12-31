@@ -3,6 +3,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# Broken Rules
+BUILD_BROKEN_DUP_RULES := true
+BUILD_BROKEN_VENDOR_PROPERTY_NAMESPACE := true
+
 BOARD_VENDOR := alldocube
 DEVICE_PATH := device/alldocube/T811M
 KERNEL_PATH := device/alldocube/T811M-kernel
@@ -39,6 +43,14 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
 TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a75
 
+# ART
+ifeq ($(TARGET_BUILD_VARIANT),user)
+ART_BUILD_TARGET_NDEBUG := true
+ART_BUILD_TARGET_DEBUG := false
+ART_BUILD_HOST_NDEBUG := true
+ART_BUILD_HOST_DEBUG := false
+endif
+
 # Audio
 BOARD_USES_ALSA_AUDIO := true
 
@@ -73,6 +85,8 @@ BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 # HIDL
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
     hardware/mediatek/vintf/mediatek_framework_compatibility_matrix.xml
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/vintf/manifest.xml
+DEVICE_MATRIX_FILE := $(DEVICE_PATH)/vintf/compatibility_matrix.xml
 
 # Kernel
 # Kill lineage kernel build task while preserving kernel
@@ -154,9 +168,9 @@ BOARD_HAS_MTK_HARDWARE := true
 TARGET_BOARD_PLATFORM := mt6789
 
 # Properties
-TARGET_PRODUCT_PROP += $(LOCAL_PATH)/product.prop
-TARGET_SYSTEM_PROP += $(LOCAL_PATH)/system.prop
-TARGET_VENDOR_PROP += $(LOCAL_PATH)/vendor.prop
+TARGET_PRODUCT_PROP += $(DEVICE_PATH)/product.prop
+TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
+TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
 # Recovery
 BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
@@ -165,6 +179,12 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/init/fstab.mt6789
 TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
+
+# RIL
+ENABLE_VENDOR_RIL_SERVICE := true
+
+# SEPolicy
+include device/mediatek/sepolicy_vndr/SEPolicy.mk
 
 # Security patch level
 VENDOR_SECURITY_PATCH := 2023-11-05
@@ -195,3 +215,26 @@ BOARD_AVB_BOOT_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_BOOT_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_BOOT_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_BOOT_ROLLBACK_INDEX_LOCATION := 3
+
+# Wi-Fi
+WPA_SUPPLICANT_VERSION := VER_0_8_X
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_HOSTAPD_DRIVER := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_mt66xx
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_mt66xx
+WIFI_DRIVER_FW_PATH_PARAM := "/dev/wmtWifi"
+WIFI_DRIVER_FW_PATH_STA := "STA"
+WIFI_DRIVER_FW_PATH_AP := "AP"
+WIFI_DRIVER_FW_PATH_P2P := "P2P"
+WIFI_DRIVER_STATE_CTRL_PARAM := "/dev/wmtWifi"
+WIFI_DRIVER_STATE_ON := "1"
+WIFI_DRIVER_STATE_OFF := "0"
+WIFI_HAL_INTERFACE_COMBINATIONS := {{{STA}, 2}}
+WIFI_HAL_INTERFACE_COMBINATIONS += ,{{{AP}, 2},}
+WIFI_HAL_INTERFACE_COMBINATIONS += ,{{{STA}, 1}, {{AP}, 1}}
+WIFI_HAL_INTERFACE_COMBINATIONS += ,{{{STA}, 1}, {{P2P}, 1}}
+WIFI_HAL_INTERFACE_COMBINATIONS += ,{{{STA}, 1}, {{NAN}, 1}}
+WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
+
+# Inherit the proprietary files
+include vendor/alldocube/T811M/BoardConfigVendor.mk

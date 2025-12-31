@@ -48,7 +48,7 @@ PRODUCT_PACKAGES += \
 
 # Audio
 $(call soong_config_set,android_hardware_audio,run_64bit,true)
-$(call soong_config_set_bool,android_hardware_audio,skip_speaker_layout_channel_mask_field,true)
+$(call soong_config_set,android_hardware_audio,skip_speaker_layout_channel_mask_field,true)
 PRODUCT_PACKAGES += \
     android.hardware.audio@7.0-impl:64 \
     android.hardware.audio.effect@7.0-impl:64 \
@@ -99,12 +99,23 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.low_latency.xml \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
+# AudioFX
+TARGET_EXCLUDES_AUDIOFX := true
+
 # Bluetooth
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth-service.mediatek
+
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth_le.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth_le.xml \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth.xml
 
 # Camera
+PRODUCT_PACKAGES += \
+    android.hardware.camera.common@1.0.vendor:64 \
+    android.hardware.camera.device@3.6.vendor:64 \
+    android.hardware.camera.provider@2.6.vendor:64
+    
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.flash-autofocus.xml \
     frameworks/native/data/etc/android.hardware.camera.full.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.full.xml \
@@ -143,15 +154,45 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.opengles.deqp.level-2021-03-01.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.opengles.deqp.level.xml \
     frameworks/native/data/etc/android.software.vulkan.deqp.level-2021-03-01.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.vulkan.deqp.level.xml
 
+# DRM
+PRODUCT_PACKAGES += \
+    com.android.hardware.drm.clearkey \
+    android.hardware.drm@1.4.vendor
+
 # fastbootd
 PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.1-impl-mock \
     fastbootd
 
+# Gatekeeper
+PRODUCT_PACKAGES += \
+    android.hardware.gatekeeper@1.0-impl:64 \
+    android.hardware.gatekeeper@1.0-service
+
+# GNSS
+PRODUCT_PACKAGES += \
+    android.hardware.gnss.measurement_corrections@1.1.vendor:64 \
+    android.hardware.gnss.visibility_control@1.0.vendor:64 \
+    android.hardware.gnss@1.1.vendor:64 \
+    android.hardware.gnss@2.1.vendor:64 \
+    android.hardware.gnss-V1-ndk.vendor:64
+
 # Health
 PRODUCT_PACKAGES += \
     android.hardware.health@2.1-impl \
     android.hardware.health@2.1-service
+
+# HIDL
+PRODUCT_PACKAGES += \
+    android.hidl.base@1.0:64 \
+    android.hidl.allocator@1.0:64 \
+    android.hidl.base@1.0.vendor:64 \
+    android.hidl.allocator@1.0.vendor:64 \
+    libhidltransport:64 \
+    libhidlmemory.vendor:64 \
+    libhidltransport.vendor:64 \
+    libhwbinder:64 \
+    libhwbinder.vendor:64
 
 # Init
 PRODUCT_PACKAGES += \
@@ -172,6 +213,15 @@ PRODUCT_PACKAGES += \
     init.recovery.usb.rc \
     init.sensor_2_0.rc \
     ueventd.mt6789.rc
+
+# Keymint
+PRODUCT_PACKAGES += \
+    android.hardware.security.keymint-V1-ndk.vendor:64 \
+    android.hardware.security.keymint-V4-ndk.vendor:64 \
+    android.hardware.security.secureclock-V1-ndk.vendor:64 \
+    android.hardware.security.sharedsecret-V1-ndk.vendor:64 \
+    android.hardware.security.rkp-V3-ndk.vendor:64 \
+    libcppbor_external.vendor:64
 
 # Keystore
 PRODUCT_COPY_FILES += \
@@ -214,10 +264,102 @@ PRODUCT_PACKAGES += \
 # Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
+# Power
+PRODUCT_PACKAGES += \
+    android.hardware.power-service.pixel-libperfmgr
+
+PRODUCT_PACKAGES += \
+    vendor.mediatek.hardware.mtkpower@1.2-service.stub:64 \
+    vendor.mediatek.hardware.mtkpower@1.0.vendor:64 \
+    vendor.mediatek.hardware.mtkpower@1.1.vendor:64
+
+PRODUCT_PACKAGES += \
+    android.hardware.power@1.3.vendor:64
+
+# Power | Dummy mtkperf lib
+PRODUCT_PACKAGES += \
+    libmtkperf_client_vendor:64 \
+    libmtkperf_client:64
+
+# Power configurations
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
+
 # Product characteristics
 PRODUCT_CHARACTERISTICS := tablet
 
+# Public Libraries
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
+
+# Radio
+PRODUCT_PACKAGES += \
+    android.hardware.radio.config@1.3.vendor:64 \
+    android.hardware.radio@1.6.vendor:64 \
+    libprotobuf-cpp-full.vendor:64 \
+    libprotobuf-cpp-lite.vendor:64 \
+    libprotobuf-cpp-full-3.9.1-vendorcompat:64 \
+    libprotobuf-cpp-lite-3.9.1-vendorcompat:64
+
+# Required libs as of 14 QPR3
+PRODUCT_PACKAGES += \
+    libcamera_metadata_shim \
+    libexpat.vendor \
+    libunwindstack.vendor \
+    libchrome.vendor:64 \
+    libcurl.vendor \
+    libexif.vendor \
+    libdng_sdk.vendor \
+    liblz4.vendor \
+    libpiex \
+    libexpat.vendor \
+    libpng.vendor \
+    libion.vendor \
+    libui.vendor \
+    libmemunreachable.vendor \
+    libgatekeeper.vendor \
+    libjsoncpp.vendor \
+    libnetutils.vendor \
+    libdumpstateutil.vendor \
+    libpower.vendor \
+    libruy.vendor \
+    libpcap.vendor \
+    libsqlite.vendor \
+    libtextclassifier_hash.vendor \
+    libutilscallstack.vendor \
+    libziparchive.vendor \
+    libhidlmemory.vendor
+
+# Required libs as of 15 QPR2
+PRODUCT_PACKAGES += \
+   libbase_shim:64 \
+   libprocessgroup_shim:64 \
+   libbinder-v32:64 \
+   libhidlbase-v32:64 \
+   libstagefright_foundation-v33:64 \
+   libutils-v32:64
+
+# Secure Element
+PRODUCT_PACKAGES += \
+    android.hardware.secure_element@1.2.vendor:64
+
 # Sensors
+PRODUCT_PACKAGES += \
+    libsensorndkbridge:64 \
+    android.hardware.sensors@1.0.vendor:64 \
+    android.hardware.sensors@2.1.vendor:64 \
+    android.frameworks.sensorservice@1.0:64 \
+    android.frameworks.sensorservice@1.0.vendor:64 \
+    android.hardware.sensors-service.multihal \
+    android.hardware.sensors@2.0-subhal-impl-1.0 \
+    android.hardware.sensors@2.0-ScopedWakelock.vendor:64
+
+PRODUCT_PACKAGES += \
+    sensors.dynamic_sensor_hal:64
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf
+
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.accelerometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.compass.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.compass.xml \
@@ -234,9 +376,26 @@ PRODUCT_SHIPPING_API_LEVEL := $(BOARD_SHIPPING_API_LEVEL)
 # Soong Namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) \
-    hardware/mediatek
+    hardware/mediatek \
+    hardware/millennium \
+    hardware/mediatek/libmtkperf_client \
+    hardware/google/interfaces \
+    hardware/google/pixel \
+
+# Thermal
+PRODUCT_PACKAGES += \
+    android.hardware.thermal-service.mediatek
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/thermal_info_config.json:$(TARGET_COPY_OUT_VENDOR)/etc/thermal_info_config.json
 
 # USB
+$(call soong_config_set,android_hardware_mediatek_usb,audio_accessory_supported,true)
+
+PRODUCT_PACKAGES += \
+    android.hardware.usb-service.mediatek \
+    android.hardware.usb.gadget-service.mediatek
+
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.usb.host.xml
@@ -245,8 +404,33 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.verified_boot.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.verified_boot.xml
 
-# WiFi
+# Vndservice
+PRODUCT_PACKAGES += \
+   vndservicemanager \
+   vndservice
+
+# Wi-Fi
+PRODUCT_PACKAGES += \
+    libwifi-hal-wrapper:64 \
+    android.hardware.wifi-service \
+    wpa_supplicant \
+    lib_driver_cmd_mt66xx \
+    hostapd \
+    libkeystore-wifi-hidl:64 \
+    libkeystore-engine-wifi-hidl:64
+
+PRODUCT_PACKAGES += \
+    android.hardware.tetheroffload.config@1.0.vendor:64 \
+    android.hardware.tetheroffload.control@1.0.vendor:64 \
+    android.hardware.tetheroffload.control@1.1.vendor:64
+
+PRODUCT_COPY_FILES += \
+    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/wifi/,$(TARGET_COPY_OUT_VENDOR)/etc/wifi)
+
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/android.hardware.wifi.passpoint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.passpoint.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
+
+# Inherit the proprietary files
+$(call inherit-product, vendor/alldocube/T811M/T811M-vendor.mk)
